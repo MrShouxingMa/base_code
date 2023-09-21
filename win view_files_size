@@ -1,0 +1,22 @@
+# Windows 查看当前路径下的文件夹大小
+#参考  https://blog.csdn.net/sinat_27873735/article/details/131552957
+
+"""
+这个powershell脚本会遍历当前目录下的所有子文件夹，并计算每个子文件夹的总大小。它使用Get-ChildItem命令获取当前目录下的所有子文件夹，并使用ForEach-Object循环处理每个子文件夹。
+
+在循环内部，我们首先获取子文件夹的完整路径$folderPath。然后，我们使用Get-ChildItem命令和-Recurse参数来递归地获取该子文件夹以及其包含的所有文件和子文件夹。接下来，我们使用Measure-Object命令和-Property Length -Sum参数来计算文件和子文件夹的总大小。最后，我们将文件夹的大小转换为兆字节（MB），并使用Write-Output命令输出结果。
+
+执行以上命令后，你将看到当前目录下每个子文件夹的大小以及以MB为单位的文件夹大小。
+"""
+
+
+
+
+
+Get-ChildItem -Directory | ForEach-Object {
+    $folderPath = $_.FullName
+    $folderSize = (Get-ChildItem -Recurse $folderPath | Measure-Object -Property Length -Sum).Sum
+    $folderSizeInMB = $folderSize / 1MB
+    Write-Output "$folderPath : $folderSizeInMB MB"
+}
+
